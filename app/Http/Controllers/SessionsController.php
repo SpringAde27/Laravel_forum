@@ -25,6 +25,10 @@ class SessionsController extends Controller
 
         // DB에서 사용자를 찾는데 사용
         if( !auth()->attempt($request->only('email', 'password'), $request->has('remember')) ){
+            if (\App\User::socialUser($request->input('email'))->first()) {
+                return $this->respondError('회원가입하지 않았습니다. 이전에 깃허브로 로그인하였습니다.');
+            }
+
             return $this->respondError('이메일 또는 비밀번호가 맞지 않습니다.');
         }
         

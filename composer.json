@@ -9,11 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "doctrine/dbal": "^2.10",
         "erusev/parsedown-extra": "^0.8.1",
         "fideloper/proxy": "^4.0",
         "intervention/image": "^2.5",
         "laracasts/flash": "^3.1",
         "laravel/framework": "^6.2",
+        "laravel/socialite": "^4.3",
         "laravel/tinker": "^2.0"
     },
     "require-dev": {
