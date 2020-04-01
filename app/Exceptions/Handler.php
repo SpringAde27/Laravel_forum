@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -13,7 +15,9 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        // \Illuminate\Auth\AuthenticationException::class,
+        \Illuminate\Validation\ValidationException::class,
+        \lluminate\Database\Eloquent\ModelNotFoundException::class
     ];
 
     /**
@@ -49,7 +53,24 @@ class Handler extends ExceptionHandler
      * @throws \Exception
      */
     public function render($request, Exception $exception)
-    {
+    {        
+        if( app()->environment('production') ) {
+            $statusCode = 400;
+            $title = '죄송합니다 :(';
+            $description = '에러가 발생했습니다.';
+
+            if( $exception instanceof ModelNotFoundException or
+                $exception instanceof NotFoundHttpException ) {
+                $statusCode = 404;
+                $description = $exception->getMessage() ?: '요청하신 페이지가 없습니다.';
+            }
+
+            return response(view('errors.404',[
+                'title' => $title,
+                'description' => $description
+            ]), $statusCode);
+        }
+         
         return parent::render($request, $exception);
     }
 }
