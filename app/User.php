@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'confirm_code', 'activated', 'name', 'email', 'password', 'last_login'
     ];
 
     /**
@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+      'confirm_code', 'password', 'remember_token',
     ];
 
     /**
@@ -35,5 +35,9 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'activated' => 'boolean'
     ];
+
+    // 모델에 접근할 때, 카본 인스턴스로 받을 수 있다.
+    protected $dates = ['last_login'];
 }
