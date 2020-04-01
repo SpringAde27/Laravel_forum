@@ -40,4 +40,10 @@ class User extends Authenticatable
 
     // 모델에 접근할 때, 카본 인스턴스로 받을 수 있다.
     protected $dates = ['last_login'];
+
+    // 쿼리스코프 : 반복되는 쿼리 조각
+    public function scopeSocialUser(\Illuminate\Database\Eloquent\Builder $query, $email)
+    {
+        return $query->whereEmail($email)->whereNull('password');
+    }
 }
