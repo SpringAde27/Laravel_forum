@@ -74,6 +74,22 @@ class ArticlesController extends Controller
 
         $article->tags()->sync($request->input('tags'));
 
+        if($request->hasFile('files')) {
+            $files = $request->file('files');
+
+            foreach($files as $file) {
+                $filename = \Str::random().filter_var($file->getClientOriginalName(), FILTER_SANITIZE_URL);
+
+                $article->attachments()->create([
+                  'filename' => $filename,
+                  'bytes' => $file->getSize(),
+                  'mime' => $file->getClientMimeType()
+                ]);
+
+                $file->move(attachments_path(), $filename);
+            }
+        }
+
         event(new \App\Events\ArticlesEvent($article));
         flash('작성하신 글이 저장되었습니다.')->success();
 

@@ -6,7 +6,7 @@
     <h1>새 포럼 글쓰기</h1>
   </div>
 
-  <form action="{{ route('articles.store') }}" method="POST">
+  <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data">
     {!! csrf_field() !!}
 
     @include('articles.partial.form')
