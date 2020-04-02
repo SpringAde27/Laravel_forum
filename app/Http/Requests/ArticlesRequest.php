@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Attachment;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ArticlesRequest extends FormRequest
@@ -40,6 +41,8 @@ class ArticlesRequest extends FormRequest
             'content' => ['required', 'min:3'],
             'files' => ['array'],
             'files.*' => ['sometimes', "mimes:{$mimes}", 'max:30000'],
+            'attachments' => ['array'],
+            'attachments.*' => ['integer', 'exists:attachments,id'],
         ];
     }
 
@@ -73,5 +76,15 @@ class ArticlesRequest extends FormRequest
             'files' => '파일',
             'files.*' => '파일',
         ];
+    }
+
+    /**
+     * 사용자 입력 값으로부터 첨부파일 객체를 조회
+     *
+     * @return Collection
+     */
+    public function getAttachments()
+    {
+        return Attachment::whereIn('id', $this->input('attachments', []))->get();
     }
 }

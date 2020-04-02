@@ -74,21 +74,19 @@ class ArticlesController extends Controller
 
         $article->tags()->sync($request->input('tags'));
 
-        if($request->hasFile('files')) {
-            $files = $request->file('files');
+        // if ($request->has('attachments')) {
+        //     $attachments = \App\Attachment::whereIn('id', $request->input('attachments'))->get();
+        //     $attachments->each(function($attachment) use($article) {
+        //         $attachment->article()->associate($article);
+        //         $attachment->save();
+        //     });
+        // }
 
-            foreach($files as $file) {
-                $filename = \Str::random().filter_var($file->getClientOriginalName(), FILTER_SANITIZE_URL);
-
-                $article->attachments()->create([
-                  'filename' => $filename,
-                  'bytes' => $file->getSize(),
-                  'mime' => $file->getClientMimeType()
-                ]);
-
-                $file->move(attachments_path(), $filename);
-            }
-        }
+        // 첨부파일 연결
+        $request->getAttachments()->each(function ($attachment) use ($article) {
+            $attachment->article()->associate($article);
+            $attachment->save();
+        });
 
         event(new \App\Events\ArticlesEvent($article));
         flash('작성하신 글이 저장되었습니다.')->success();
@@ -163,7 +161,13 @@ class ArticlesController extends Controller
     public function destroy(\App\Article $article)
     {
         $this->authorize('delete', $article);
+        
         $article->delete();
+
+        foreach($article->attachments as $attachment) {
+            \File::delete(attachments_path($attachment->name));
+            $attachment->delete();
+        }
         flash()->success('게시글을 삭제하였습니다.');
 
         return response()->json([], 204);
