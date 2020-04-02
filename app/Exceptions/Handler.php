@@ -73,4 +73,21 @@ class Handler extends ExceptionHandler
          
         return parent::render($request, $exception);
     }
+
+    /**
+     * Convert an authentication exception into an unauthenticated response.
+     * auth 미들웨어가 리다이렉션하는 GET /login 라우트가 없어서 예외 발생
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    // protected function unauthenticated($request, AuthenticationException $exception)
+    // {
+    //     if ($request->expectsJson()) {
+    //         return response()->json(['error' => $exception->getMessage()], 401);
+    //     }
+
+    //     return redirect()->guest(route('sessions.create'));
+    // }
 }

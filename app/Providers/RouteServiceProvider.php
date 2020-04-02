@@ -30,9 +30,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        // 명시적 라우트 모델 바인딩 (URL파라미터 값에 해당하는 모델을 컨트롤러에서 바로 사용 가능)
+        Route::model('article', \App\Article::class);
     }
 
     /**

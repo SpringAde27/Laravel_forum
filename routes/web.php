@@ -25,6 +25,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Auth::routes();
 
 
+/* Article RESTful Resource Controller */
+Route::resource('articles','ArticlesController');
+
+
 /* 사용자 등록 */
 Route::get('auth/register', [
   'as' => 'users.create',
