@@ -21,9 +21,11 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($slug = null)
     {
-        $articles = \App\Article::latest()->paginate(3);
+        $query = $slug ? \App\Tag::whereSlug($slug)->firstOrFail()->articles() : new \App\Article;
+
+        $articles = $query->latest()->paginate(5);
       
         // 즉시 로드 (N+1쿼리 문제 해결_with(): 인자로 받은 관계를 미리 로드)
         // $articles = \App\Article::with('user')->get();
@@ -69,6 +71,8 @@ class ArticlesController extends Controller
             flash('글이 저장되지 않았습니다.')->error();
             return back()->withInput();
         }
+
+        $article->tags()->sync($request->input('tags'));
 
         event(new \App\Events\ArticlesEvent($article));
         flash('작성하신 글이 저장되었습니다.')->success();
@@ -123,6 +127,9 @@ class ArticlesController extends Controller
     {
         $this->authorize('update', $article);
         $article->update($request->all());
+
+        $article->tags()->sync($request->input('tags'));
+
         flash()->success('수정하신 내용을 저장했습니다.');
 
         return redirect()->route('articles.show', $article->id);
