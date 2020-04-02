@@ -74,5 +74,24 @@
       el__create.hide('fast');
       el__edit.toggle('fast').end().find('textarea').first().focus();
     });
+
+    // 투표
+    $('.btn__vote__comment').on('click', function(e) {
+      var self = $(this),
+          commentId = self.closest('.item__comment').data('id');
+
+      $.ajax({
+        type: 'POST',
+        url: '/comments/' + commentId + '/votes',
+        data: {
+          vote: self.data('vote')
+        }
+      }).then(function (data) {
+        self.find('span').html(data.value).fadeIn();
+        self.attr('disabled', 'disabled');
+        self.siblings().next('.btn__vote__comment').attr('disabled', 'disabled');
+        self.siblings().prev('.btn__vote__comment').attr('disabled', 'disabled');
+      });
+    });
   </script>
 @endsection

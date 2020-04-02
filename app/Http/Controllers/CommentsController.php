@@ -41,9 +41,42 @@ class CommentsController extends Controller
         if($comment->replies->count() > 0) {
             $comment->delete();
         } else {
+            $comment->votes()->delete();
             $comment->forceDelete();
         }
 
         return response()->json($comment, 200);
+    }
+
+    /**
+     * Vote up or down for the given comment.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Comment $comment
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function vote(Request $request, Comment $comment)
+    {
+        $this->validate($request, [
+            'vote' => 'required|in:up,down',
+        ]);
+
+        if ($comment->votes()->whereUserId($request->user()->id)->exists()) {
+            return response()->json(['error' => 'already_voted'], 409);
+        }
+
+        $up = $request->input('vote') == 'up' ? true : false;
+
+        $comment->votes()->create([
+            'user_id'  => $request->user()->id,
+            'up'       => $up,
+            'down'     => ! $up,
+            'voted_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+
+        return response()->json([
+            'voted' => $request->input('vote'),
+            'value' => $comment->votes()->sum($request->input('vote')),
+        ], 201, [], JSON_PRETTY_PRINT);
     }
 }

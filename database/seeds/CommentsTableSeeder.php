@@ -33,5 +33,14 @@ class CommentsTableSeeder extends Seeder
                 );
             }
         });
+
+        // up & down 투표
+        $comments = App\Comment::all();
+
+        $comments->each(function ($comment) {
+            $comment->votes()->save(factory(App\Vote::class)->make());
+            $comment->votes()->save(factory(App\Vote::class)->make());
+            $comment->votes()->save(factory(App\Vote::class)->make());
+        });
     }
 }

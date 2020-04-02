@@ -68,3 +68,17 @@ $factory->define(App\Comment::class, function (Faker $faker) {
         },
     ];
 });
+
+$factory->define(App\Vote::class, function (Faker $faker) {
+    $up = $faker->randomElement([true, false]);
+    $down = ! $up;
+    $userIds = App\User::pluck('id')->toArray();
+
+    return [
+        'up' => $up ? 1 : null,
+        'down' => $down ? 1 : null,
+        'user_id' => function () use($faker, $userIds) {
+            return $faker->randomElement($userIds);
+        },
+    ];
+});

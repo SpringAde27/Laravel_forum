@@ -1,3 +1,14 @@
+<link href="{{ mix('css/common.css') }}" rel="stylesheet">
+
+@php
+  $voted = null;
+
+  if ($currentUser) {
+    $voted = $comment->votes->contains('user_id', $currentUser->id)
+      ? 'disabled="disabled"' : null;
+  }
+@endphp
+
 @if ($isTrashed and !$hasChild)
   <!-- // 1. 삭제된 댓글 && 자식 댓글도 없다. 아무것도 출력할 필요가 없다. -->
 @elseif ($isTrashed and $hasChild)
@@ -71,6 +82,21 @@
       </div>
 
       <div class="action__comment">
+        {{-- 투표 --}}
+        @if ($currentUser)
+          <button class="btn btn-sm btn__vote__comment" data-vote="up" title="좋아요" {{ $voted }}>
+            <i class="fa fa-chevron-up"></i>
+            <span>{{ $comment->up_count }}</span>
+          </button>
+
+          <span> | </span>
+
+          <button class="btn btn-sm btn__vote__comment" data-vote="down" title="싫어요" {{ $voted }}>
+            <i class="fa fa-chevron-down"></i>
+            <span>{{ $comment->down_count }}</span>
+          </button>
+        @endif
+        
         {{-- 권한이 있는 사용자만 사용 --}}
         @can('update', $comment)
           <button class="btn btn-sm btn-outline-dark btn__delete__comment">댓글 삭제</button>

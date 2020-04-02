@@ -44,6 +44,13 @@ Route::resource('comments', 'CommentsController', ['only' => ['update', 'destroy
 Route::resource('articles.comments', 'CommentsController', ['only' => 'store']);
 
 
+/* 투표 */
+Route::post('comments/{comment}/votes', [
+  'as' => 'comments.vote',
+  'uses' => 'CommentsController@vote',
+]);
+
+
 /* 사용자 등록 */
 Route::get('auth/register', [
   'as' => 'users.create',

@@ -25,10 +25,21 @@ class Comment extends Model
 
     protected $with = [
         'user',
+        'votes'
     ];
 
     protected $dates = [
         'deleted_at',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'up_count',
+        'down_count',
     ];
 
     /* Relationships */
@@ -50,5 +61,20 @@ class Comment extends Model
     public function parent()
     {
         return $this->belongsTo(Comment::class, 'parent_id', 'id');
+    }
+
+    public function votes() {
+        return $this->hasMany(Vote::class);
+    }
+
+    /* (get) 접근자 - Accessors */
+    public function getUpCountAttribute()
+    {
+        return (int) $this->votes()->sum('up');
+    }
+
+    public function getDownCountAttribute()
+    {
+        return (int) $this->votes()->sum('down');
     }
 }
