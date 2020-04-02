@@ -34,6 +34,11 @@ Route::get('tags/{slug}/articles', [
 ]);
 
 
+/* 첨부 파일 */
+Route::resource('attachments', 'AttachmentsController', ['only' => ['store', 'destroy']]);
+Route::get('attachments/{file}', 'AttachmentsController@show');
+
+
 /* 사용자 등록 */
 Route::get('auth/register', [
   'as' => 'users.create',

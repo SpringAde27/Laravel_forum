@@ -22,7 +22,7 @@
     @endif
 
     @if ($viewName === 'articles.show')
-      @include('attachments.partial.list', ['attachments' => $article->attachments])
+      @include('attachments.partial.list', ['attachments' => $article->attachments, 'isAuthor' => $article->user])
     @endif
   </div>
 </div>

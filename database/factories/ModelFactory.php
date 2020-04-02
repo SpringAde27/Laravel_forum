@@ -43,3 +43,12 @@ $factory->define(App\Article::class, function (Faker $faker) {
         'updated_at' => $date,
     ];
 });
+
+$factory->define(App\Attachment::class, function (Faker $faker) {
+    return [
+        'filename' => sprintf("%s.%s",
+            Str::random(),
+            $faker->randomElement(config('project.mimes'))
+        )
+    ];
+});
