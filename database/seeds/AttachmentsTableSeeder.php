@@ -52,6 +52,22 @@ class AttachmentsTableSeeder extends Seeder
             );
         });
 
+        // 테스트용 고아 첨부파일을 만든다.
+        foreach(range(1, 10) as $index) {
+            $path = $faker->image(attachments_path());
+            $filename = File::basename($path);
+            $bytes = File::size($path);
+            $mime = File::mimeType($path);
+            $this->command->warn("File saved: {$filename}");
+
+            factory(App\Attachment::class)->create([
+                'filename' => $filename,
+                'bytes' => $bytes,
+                'mime' => $mime,
+                'created_at' => $faker->dateTimeBetween('-1 months'),
+            ]);
+        }
+
         $this->command->info('Seeded: attachments table and files');
     }
 }
