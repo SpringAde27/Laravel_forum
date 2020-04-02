@@ -106,8 +106,9 @@ class ArticlesController extends Controller
     public function show(\App\Article $article)
     {
         // $article = \App\Article::findOrFail($id);
+        $comments = $article->comments()->with('replies')->withTrashed()->whereNull('parent_id')->latest()->get();
         
-        return view('articles.show', compact('article'));
+        return view('articles.show', compact('article', 'comments'));
     }
 
     /**
@@ -168,6 +169,11 @@ class ArticlesController extends Controller
             \File::delete(attachments_path($attachment->name));
             $attachment->delete();
         }
+
+        foreach($article->comments as $comment) {
+            $comment->forceDelete();
+        }
+
         flash()->success('게시글을 삭제하였습니다.');
 
         return response()->json([], 204);

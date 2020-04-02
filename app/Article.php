@@ -22,6 +22,10 @@ class Article extends Model
         return $this->hasMany(Attachment::class);
     }
 
+    public function comments() {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
     /**
      * 즉시로드 사용 
      * 1. with('관계_이름')

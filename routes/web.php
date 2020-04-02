@@ -39,6 +39,11 @@ Route::resource('attachments', 'AttachmentsController', ['only' => ['store', 'de
 Route::get('attachments/{file}', 'AttachmentsController@show');
 
 
+/* 댓글 */
+Route::resource('comments', 'CommentsController', ['only' => ['update', 'destroy']]);
+Route::resource('articles.comments', 'CommentsController', ['only' => 'store']);
+
+
 /* 사용자 등록 */
 Route::get('auth/register', [
   'as' => 'users.create',

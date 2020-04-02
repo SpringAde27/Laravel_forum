@@ -29,6 +29,9 @@ class DatabaseSeeder extends Seeder
         // App\Attachment::truncate();
         // $this->call(AttachmentsTableSeeder::class);
 
+        App\Comment::truncate();
+        $this->call(CommentsTableSeeder::class);
+
         // Model::reguard();
 
         if(config('database.default') !== 'sqlite') {

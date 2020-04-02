@@ -52,6 +52,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Article::class);
     }
+    
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
 
     // 모델에 없는 프로퍼티도 접근자로 만들 수 있다.
     // public function getGravatarUrlAttribute()
