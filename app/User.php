@@ -46,4 +46,10 @@ class User extends Authenticatable
     {
         return $query->whereEmail($email)->whereNull('password');
     }
+
+    // 모델 관계 연결
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }
