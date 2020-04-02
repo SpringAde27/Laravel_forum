@@ -52,4 +52,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Article::class);
     }
+
+    // 모델에 없는 프로퍼티도 접근자로 만들 수 있다.
+    // public function getGravatarUrlAttribute()
+    // {
+    //     return sprintf("//www.gravatar.com/avatar/%s?s=%s", md5($this->email), 48);
+    // }
+
+    /* Helpers */
+    public function isAdmin()
+    {
+       return $this->id === 1;
+    }
 }
