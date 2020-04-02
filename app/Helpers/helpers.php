@@ -145,3 +145,11 @@ if (! function_exists('cache_key')) {
         return md5($key);
     }
 }
+
+/* 메모리 캐시 드라이버에 따라 캐싱 분기 */
+if (! function_exists('taggable')) {
+    function taggable()
+    {
+        return in_array(config('cache.default'), ['memcached', 'redis'], true);
+    }
+}

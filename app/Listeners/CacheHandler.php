@@ -26,6 +26,12 @@ class CacheHandler
      */
     public function handle(ModelChanged $event)
     {
-        return \Cache::flush();
+        if (! taggable()) {
+          // 태깅이 불가능한 캐시 저장소의 캐시를 전부 삭제
+          return \Cache::flush();
+        }
+
+        // 캐시 태그에 해당하는 캐시만 삭제
+        return \Cache::tags($event->cacheTags)->flush();
     }
 }

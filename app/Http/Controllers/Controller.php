@@ -11,6 +11,19 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    /**
+     * @var \Illuminate\Cache\CacheManager
+     */
+    protected $cache;
+
+    public function __construct() {
+        $this->cache = app('cache');
+
+        if ((new \ReflectionClass($this))->implementsInterface(Cacheable::class) and taggable()) {
+            $this->cache = app('cache')->tags($this->cacheTags());
+        }
+    }
+
     /* 캐싱 로직 */
     protected function cache($key, $minutes, $query, $method, ...$args)
     {

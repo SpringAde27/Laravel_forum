@@ -6,14 +6,26 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ArticlesRequest;
 use Illuminate\Auth\Middleware\Authenticate;
 
-class ArticlesController extends Controller
+class ArticlesController extends Controller implements Cacheable
 {
     /**
      * ArticlesController constructor.
      */
     public function __construct()
     {
+        parent::__construct();
+
         $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
+
+    /**
+     * Specify the tags for caching.
+     *
+     * @return string
+     */
+    public function cacheTags()
+    {
+        return 'articles';
     }
 
     /**
