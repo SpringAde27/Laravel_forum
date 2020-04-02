@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    protected $fillable = ['title', 'content'];
+    protected $fillable = [
+        'title',
+        'content',
+        'notification',
+        'view_count',
+    ];
 
     public function user()
     {
@@ -35,4 +40,9 @@ class Article extends Model
     protected $with = [
         'user',
     ];
+
+    /* Accessor */
+    public function getCommentCountAttribute() {
+        return (int) $this->comments->count();
+    }
 }

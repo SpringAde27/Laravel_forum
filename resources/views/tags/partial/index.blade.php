@@ -6,7 +6,7 @@
   </style>
 @endsection
 
-<p class="lead">
+<p class="lead mt-3">
   <i class="fa fa-tags"></i>
   태그
 </p>

@@ -78,3 +78,49 @@ if (! function_exists('format_filesize')) {
         return round($bytes, 2) . $suffix[$step];
     }
 }
+
+
+/* 정렬 조건에 맞는 페이지로 이동하는 링크 반환 */
+if (! function_exists('link_for_sort')) {
+    /**
+     * Build HTML anchor tag for sorting
+     *
+     * @param string $column 정렬 필드
+     * @param string $text 링크 텍스트
+     * @param array  $params 링크 태그에 추가할 속성
+     * @return string
+     */
+    function link_for_sort($column, $text, $params = [])
+    {
+        $direction = request()->input('sort');
+        $reverse = ($direction == 'asc') ? 'desc' : 'asc';
+        $activeColor = request()->input("sort") == $column ? 'text-white' : '';
+
+        if (request()->input('sort') == $column) {
+            // Update passed $text var, only if it is active sort
+            $text = sprintf(
+                "%s %s",
+                $direction == 'asc'
+                    ? '<i class="fa fa-sort-alpha-asc"></i>'
+                    : '<i class="fa fa-sort-alpha-desc"></i>',
+                $text
+            );
+        }
+        
+        // 인자로 받은 연관배열을 쿼리스트링으로 변환
+        $queryString = http_build_query(array_merge(
+            request()->except(['sort', 'order']),
+            ['sort' => $column, 'order' => $reverse],
+            $params
+        ));
+
+        // 반환할 링크
+        return sprintf(
+            '<a href="%s?%s" class="d-inline-block w-100 %s">%s</a>',
+            urldecode(request()->url()),
+            $queryString,
+            $activeColor,
+            $text,
+        );
+    }
+}

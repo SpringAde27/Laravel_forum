@@ -18,13 +18,14 @@
     </div>
 
     <div class="row container__article">
-      <div class="col-md-2 sidebar__article">
-        <aside>
+      <div class="col-md-3 sidebar__article">
+        <aside class="my-4">
+          @include('articles.partial.search')
           @include('tags.partial.index')
         </aside>
       </div>
 
-      <div class="col-md-9 offset-md-1 list__article">
+      <div class="col-md-8 offset-md-1 list__article">
         <article data-id="{{ $article->id }}">
           @include('articles.partial.article', compact('article'))
           <p>{!! markdown($article->content) !!}</p>

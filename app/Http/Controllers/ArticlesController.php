@@ -21,22 +21,31 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($slug = null)
+    public function index(Request $request, $slug = null)
     {
         $query = $slug ? \App\Tag::whereSlug($slug)->firstOrFail()->articles() : new \App\Article;
 
-        $articles = $query->latest()->paginate(5);
+        // 정렬
+        $query = $query->orderBy(
+            $request->input('sort', 'created_at'),
+            $request->input('order', 'desc'),
+        );
+
+        // 검색
+        if ($keyword = request()->input('search')) {
+            $raw = 'MATCH(title, content) AGAINST(? IN BOOLEAN MODE)';
+            $query = $query->whereRaw($raw, [$keyword]);
+        }
       
         // 즉시 로드 (N+1쿼리 문제 해결_with(): 인자로 받은 관계를 미리 로드)
         // $articles = \App\Article::with('user')->get();
-        
-        // $articles->load('user'); // 지연 로드 (나중에 필요시 관계 로드)
-        
-        // dd(view('articles.index'), \compact('articles'))->render();
+
+        // 지연 로드 (나중에 필요시 관계 로드)
+        // $articles->load('user');
+
+        $articles = $query->latest()->paginate(3);
 
         return view('articles.index', compact('articles'));
-
-        // return __METHOD__. '은(는) Article 컬렉션을 조회합니다.';
     }
 
     /**
@@ -106,7 +115,15 @@ class ArticlesController extends Controller
     public function show(\App\Article $article)
     {
         // $article = \App\Article::findOrFail($id);
-        $comments = $article->comments()->with('replies')->withTrashed()->whereNull('parent_id')->latest()->get();
+        $article->view_count += 1;
+        $article->save();
+
+        $comments = $article->comments()
+                            ->with('replies')
+                            ->withTrashed()
+                            ->whereNull('parent_id')
+                            ->latest()
+                            ->get();
         
         return view('articles.show', compact('article', 'comments'));
     }
