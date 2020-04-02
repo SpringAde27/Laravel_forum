@@ -23,6 +23,8 @@ class ArticlesController extends Controller
      */
     public function index(Request $request, $slug = null)
     {
+        $cacheKey = cache_key('articles.index');
+        
         $query = $slug ? \App\Tag::whereSlug($slug)->firstOrFail()->articles() : new \App\Article;
 
         // 정렬
@@ -43,7 +45,9 @@ class ArticlesController extends Controller
         // 지연 로드 (나중에 필요시 관계 로드)
         // $articles->load('user');
 
-        $articles = $query->latest()->paginate(3);
+        // $articles = $query->latest()->paginate(3);
+
+        $articles = $this->cache($cacheKey, 5, $query, 'paginate', 3);
 
         return view('articles.index', compact('articles'));
     }
@@ -103,9 +107,12 @@ class ArticlesController extends Controller
         });
 
         event(new \App\Events\ArticlesEvent($article));
+        event(new \App\Events\ModelChanged(['articles']));
+
         flash('작성하신 글이 저장되었습니다.')->success();
 
-        return redirect(route('articles.index'));
+        // return redirect(route('articles.index'));
+        return redirect(route('articles.show', $article->id));
     }
 
     /**
@@ -172,6 +179,8 @@ class ArticlesController extends Controller
 
         $article->tags()->sync($request->input('tags'));
 
+        event(new \App\Events\ModelChanged(['articles']));
+
         flash()->success('수정하신 내용을 저장했습니다.');
 
         return redirect()->route('articles.show', $article->id);
@@ -200,6 +209,8 @@ class ArticlesController extends Controller
         foreach($article->comments as $comment) {
             $comment->forceDelete();
         }
+
+        event(new \App\Events\ModelChanged(['articles']));
 
         flash()->success('게시글을 삭제하였습니다.');
 

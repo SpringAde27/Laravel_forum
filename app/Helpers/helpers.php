@@ -124,3 +124,24 @@ if (! function_exists('link_for_sort')) {
         );
     }
 }
+
+/* 캐시 키 생성 */
+if (! function_exists('cache_key')) {
+    /**
+     * Generate key for caching.
+     *
+     * Note that, even though the request endpoints are the same
+     *     the response body may be different because of the query string.
+     *
+     * @param $base
+     * @return string
+     */
+    function cache_key($base)
+    {
+        $key = ($query = request()->getQueryString())
+            ? $base . '.' . urlencode($query)
+            : $base;
+
+        return md5($key);
+    }
+}
