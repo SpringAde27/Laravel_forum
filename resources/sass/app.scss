@@ -15,3 +15,22 @@
 
 // FontAwesome
 @import '~font-awesome/scss/font-awesome';
+
+// Select2
+@import "~select2/dist/css/select2.css";
+
+.select2 {
+  width: 100% !important;
+}
+
+.select2-dropdown,
+.select2-container--default .select2-selection--multiple,
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+  border: 1px solid $input-border;
+  border-radius: 0.25rem;
+}
+
+.select2-container,
+.select2-container--default .select2-selection--multiple {
+  font-size: $font-size-base;
+}

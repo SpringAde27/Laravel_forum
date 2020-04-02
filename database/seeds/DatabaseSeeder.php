@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
         App\Article::truncate();
         $this->call(ArticlesTableSeeder::class);
 
+        App\Tag::truncate();
+        $this->call(TagsTableSeeder::class);
+
         // Model::reguard();
 
         if(config('database.default') !== 'sqlite') {

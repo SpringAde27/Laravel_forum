@@ -1,45 +1,59 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-  <div class="page-header">
-    <h4>
-      <a href="{{ route('articles.index') }}">
-        포럼
-      </a>
-      <small>
-        / {{ $article->title }}
-      </small>
-    </h4>
+  @php
+    $viewName = 'articles.show';
+  @endphp
+
+  <div class="container">
+    <div class="page-header">
+      <h4>
+        <a href="{{ route('articles.index') }}">
+          포럼
+        </a>
+        <small>
+          / {{ $article->title }}
+        </small>
+      </h4>
+    </div>
+
+    <div class="row container__article">
+      <div class="col-md-2 sidebar__article">
+        <aside>
+          @include('tags.partial.index')
+        </aside>
+      </div>
+
+      <div class="col-md-9 offset-md-1 list__article">
+        <article data-id="{{ $article->id }}">
+          @include('articles.partial.article', compact('article'))
+          <p>{!! markdown($article->content) !!}</p>
+          @include('tags.partial.list', ['tags' => $article->tags])
+        </article>
+      
+        <div class="text-center">
+          @can('update', $article)
+            <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary">
+              <i class="fa fa-pencil"></i>
+              글 수정
+            </a>
+          @endcan
+          
+          @can('delete', $article)
+          <button class="btn btn-danger button__delete">
+            <i class="fa fa-trash-o"></i>
+            글 삭제
+          </button>
+          @endcan
+          
+          <a href="{{ route('articles.index') }}" class="btn btn-outline-secondary">
+            <i class="fa fa-list"></i>
+            글 목록
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <article data-id="{{ $article->id }}" class="p-2 my-4">
-    @include('articles.partial.article', compact('article'))
-
-    <p>{!! markdown($article->content) !!}</p>
-  </article>
-
-  <div class="text-center">
-    @can('update', $article)
-      <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-primary">
-        <i class="fa fa-pencil"></i>
-        글 수정
-      </a>
-    @endcan
-    
-    @can('delete', $article)
-    <button class="btn btn-danger button__delete">
-      <i class="fa fa-trash-o"></i>
-      글 삭제
-    </button>
-    @endcan
-    
-    <a href="{{ route('articles.index') }}" class="btn btn-outline-secondary">
-      <i class="fa fa-list"></i>
-      글 목록
-    </a>
-  </div>
-</div>
 @stop
 
 @section('script')

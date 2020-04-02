@@ -28,6 +28,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 /* Article RESTful Resource Controller */
 Route::resource('articles','ArticlesController');
 
+Route::get('tags/{slug}/articles', [
+  'as' => 'tags.articles.index',
+  'uses' => 'ArticlesController@index'
+]);
+
 
 /* 사용자 등록 */
 Route::get('auth/register', [
