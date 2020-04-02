@@ -74,7 +74,12 @@ class ArticlesController extends Controller
      */
     public function store(ArticlesRequest $request)
     {
-        $article = $request->user()->articles()->create($request->all());
+        $payload = array_merge($request->all(), [
+            'notification' => $request->has('notification'),
+        ]);
+      
+        $article = $request->user()->articles()->create($payload);
+        // $article = $request->user()->articles()->create($request->all());
 
         if(!$article) {
             flash('글이 저장되지 않았습니다.')->error();
@@ -158,7 +163,12 @@ class ArticlesController extends Controller
     public function update(ArticlesRequest $request, \App\Article $article)
     {
         $this->authorize('update', $article);
-        $article->update($request->all());
+
+        $payload = array_merge($request->all(), [
+            'notification' => $request->has('notification'),
+        ]);
+
+        $article->update($payload);
 
         $article->tags()->sync($request->input('tags'));
 

@@ -11,19 +11,24 @@ class EventServiceProvider extends ServiceProvider
 {
     /**
      * The event listener mappings for the application.
-     *
+     * 이벤트 채널과 이벤트 리스너 등록
      * @var array
      */
     protected $listen = [
         \Illuminate\Auth\Events\Login::class => [
             \App\Listeners\UsersEventListener::class,
         ],
+        \App\Events\ArticlesEvent::class => [
+            \App\Listeners\ArticlesEventListener::class,
+        ],
+        \App\Events\CommentsEvent::class => [
+            \App\Listeners\CommentsEventListener::class,
+        ],
     ];
 
     /**
-     * The subscriber classes to register.
-     *
-     * @var array
+     * 이벤트 구독자
+     * 하나의 리스너가 여러 개의 이벤트를 구독하고 이벤트를 처리할 수 있다.
      */
     protected $subscribe = [
         \App\Listeners\UsersEventListener::class,
