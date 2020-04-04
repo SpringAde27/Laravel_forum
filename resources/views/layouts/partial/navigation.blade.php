@@ -18,10 +18,10 @@
         <!-- Authentication Links -->
         @if ( Auth::guest() )
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('sessions.create') }}">Login</a>
+            <a class="nav-link" href="{{ route('sessions.create') }}">{{ trans('auth.sessions.title') }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('users.create') }}">Register</a>
+            <a class="nav-link" href="{{ route('users.create') }}">{{ trans('auth.users.title') }}</a>
           </li>
         @else
           <li class="nav-item dropdown">
@@ -31,7 +31,7 @@
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="{{ route('sessions.destroy') }}">
-                Logout
+                {{ trans('auth.sessions.destroy') }}
               </a>
             </div>
           </li>

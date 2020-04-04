@@ -26,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // 런타임에 기본 언어를 오버라이딩
+        app()->setLocale('en');
+
+        // 카본 인스턴스의 언어를 설정
+        \Carbon\Carbon::setLocale(app()->getLocale());
+
         // 뷰 컴포저
         view()->composer('*', function($view) {
             $allTags = \Cache::rememberForever('tags.list', function() {

@@ -7,21 +7,21 @@
 
   <div class="container">
     <div class="page-header">
-      <h1>포럼
-        <small> / <a href="{{ route('articles.index') }}">글 목록</a></small>
+      <h1>{{ trans('forum.title') }}
+        <small> / <a href="{{ route('articles.index') }}">{{ trans('forum.articles.index') }}</a></small>
       </h1>
     </div>
 
     <div class="text-right action__article">
       <a href="{{ route('articles.create') }}" class="btn btn-primary">
         <i class="fa fa-plus-circle"></i>
-        글쓰기
+        {{ trans('forum.articles.create') }}
       </a>
       <!-- 정렬 -->
       <div class="btn-group sort__article">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
           <i class="fa fa-sort"></i>
-          목록 정렬
+          {{ trans('forum.articles.sort') }}
           <span class="caret"></span>
         </button>
 

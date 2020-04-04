@@ -8,7 +8,7 @@
 
 <p class="lead mt-3">
   <i class="fa fa-tags"></i>
-  태그
+  {{ trans('forum.tags.title') }}
 </p>
 
 <ul class="list-group">

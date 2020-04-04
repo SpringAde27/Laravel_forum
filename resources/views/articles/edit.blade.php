@@ -5,10 +5,10 @@
   <div class="page-header">
     <h4>
       <a href="{{ route('articles.index') }}">
-        포럼
+        {{ trans('forum.title')}}
       </a>
       <small>
-        / 글 수정
+        / {{ trans('forum.articles.edit')}}
         / {{ $article->title }}
       </small>
     </h4>
@@ -21,7 +21,7 @@
     @include('articles.partial.form')
 
     <div class="form-group text-center">
-      <button type="submit" class="btn btn-primary">수정하기</button>
+      <button type="submit" class="btn btn-primary">{{ trans('forum.articles.update')}}</button>
     </div>
   </form>
 </div>

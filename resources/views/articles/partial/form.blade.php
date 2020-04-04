@@ -1,11 +1,11 @@
 <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
-  <label for="title">제목</label>
+  <label for="title">{{ trans('forum.articles.form_title') }}</label>
   <input type="text" name="title" id="title" value="{{ old('title', $article->title) }}" class="form-control"/>
   {!! $errors->first('title', '<span class="form-error">:message</span>') !!}
 </div>
 
 <div class="form-group {{ $errors->has('tags') ? 'has-error' : '' }}">
-  <label for="tags">태그</label>
+  <label for="tags">{{ trans('forum.articles.form_tags') }}</label>
   <select id="tags" name="tags[]" multiple="multiple" size="4" class="form-control">
     @foreach($allTags as $tag)
       <option value="{{ $tag->id }}" {{ $article->tags->contains($tag->id) ? 'selected="selected"' : '' }}>
@@ -17,7 +17,7 @@
 </div>
 
 <div class="form-group {{ $errors->has('content') ? 'has-error' : '' }}">
-  <label for="content">본문</label>
+  <label for="content">{{ trans('forum.articles.form_content') }}</label>
   <textarea name="content" id="content" rows="10" class="form-control">{{ old('content', $article->content) }}</textarea>
   {!! $errors->first('content', '<span class="form-error">:message</span>') !!}
 </div>
@@ -26,7 +26,7 @@
   <div class="checkbox">
     <label>
     <input type="checkbox" name="notification" value="{{ old('notification', $article->notification) }}">
-      댓글이 작성되면 이메일 알림 받기
+      {{ trans('forum.articles.notify_me') }}
     </label>
   </div>
 </div>
@@ -38,14 +38,14 @@
 </div> --}}
 
 <div class="form-group">
-  <label for="my-dropzone">첨부 파일
+  <label for="my-dropzone">{{ trans('forum.articles.form_files') }}
     <small class="text-muted">
       <i class="fa fa-chevron-up"></i>
-      닫기
+      {{ trans('forum.articles.close_files') }}
     </small>
     <small class="text-muted" style="display: none;">
       <i class="fa fa-chevron-down"></i>
-      열기
+      {{ trans('forum.articles.open_files') }}
     </small>
   </label>
 
@@ -74,10 +74,10 @@
         article_id: '{{ $article->id }}'
       },
       dictDefaultMessage: '<div class="text-center text-muted">' +
-        "<h2>첨부할 파일을 끌어다 놓으세요!</h2>" +
-        "<p>(또는 클릭하셔도 됩니다.)</p></div>",
-      dictFileTooBig: "파일당 최대 크기는 3MB입니다.",
-      dictInvalidFileType: '{{ implode(',', config('project.mimes')) }} 파일만 가능합니다.',
+        "<h2>{{ trans('forum.articles.dz_drop') }}</h2>" +
+        "<p>{{ trans('forum.articles.dz_click') }}</p></div>",
+      dictFileTooBig: "{{ trans('forum.articles.dz_toobig') }}",
+      dictInvalidFileType: '{{ trans('forum.articles.dz_filetyle', ['accepted' => implode(',', config('project.mimes'))]) }}',
       addRemoveLinks: true
     });
 
@@ -160,7 +160,7 @@
 
     /* select2 */
     $('#tags').select2({
-      placeholder: '태그를선택하세요(최대3개)',
+      placeholder: '{{ trans('forum.articles.s2_select') }}',
       maximumSelectionLength: 3
     });
   </script>

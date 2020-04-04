@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h4>댓글</h4>
+  <h4>{{ trans('forum.comments.title') }}</h4>
 </div>
 
 <div class="form__new__comment">
