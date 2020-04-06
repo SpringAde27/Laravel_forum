@@ -57,6 +57,11 @@
             
             <form action="{{ route('sessions.store') }}" method="POST" role="form" class="form__auth">
               {!! csrf_field() !!}
+
+              {{-- 쿼리스트링으로 받은 return값 --}}
+              @if ($return = request('return'))
+                <input type="hidden" name="return" value="{{ $return }}">
+              @endif
             
               <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
                 <input type="email" name="email" class="form-control" placeholder="이메일" value="{{ old('email') }}" autofocus/>

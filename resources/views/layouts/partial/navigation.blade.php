@@ -18,7 +18,9 @@
         <!-- Authentication Links -->
         @if ( Auth::guest() )
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('sessions.create') }}">{{ trans('auth.sessions.title') }}</a>
+            <a class="nav-link" href="{{ route('sessions.create', ['return' => urlencode($currentUrl)]) }}">
+              {{ trans('auth.sessions.title') }}
+            </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('users.create') }}">{{ trans('auth.users.title') }}</a>

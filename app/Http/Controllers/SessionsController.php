@@ -38,10 +38,23 @@ class SessionsController extends Controller
             return $this->respondError('가입 확인해 주세요.');
         }
 
-        flash(auth()->user()->name . '님, 안녕하세요:D');
+        return $this->respondCreated(
+            trans('auth.sessions.info_welcome', ['name' => auth()->user()->name])
+        );
+
+        // flash(auth()->user()->name . '님, 안녕하세요:D');       
         
         // auth미들웨어에서 로그인 페이지로 왔을 때, 사용자가 원래 접근하려 했던 URL로 리다이렉션
-        return redirect()->intended('home');
+        // return redirect()->intended('home');
+    }
+
+    protected function respondCreated($message)
+    {
+        flash($message);
+
+        return ( $return = request('return') )
+            ? redirect(urldecode($return))
+            : redirect()->intended('home');
     }
 
     protected function respondError($message)
