@@ -9,7 +9,7 @@
   <select id="tags" name="tags[]" multiple="multiple" size="4" class="form-control">
     @foreach($allTags as $tag)
       <option value="{{ $tag->id }}" {{ $article->tags->contains($tag->id) ? 'selected="selected"' : '' }}>
-        {{ $tag->name }}
+        {{ $tag->{$currentLocale} }}
       </option>
     @endforeach
   </select>

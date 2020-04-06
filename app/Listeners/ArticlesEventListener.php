@@ -28,14 +28,14 @@ class ArticlesEventListener
         $article = $event->article;
 
           if ($event->action === 'created') {
-              $view = 'emails.articles.created';
+              $view = 'emails.'.app()->getLocale().'.articles.created';
 
               \Mail::send(
                   $view,
                   compact('article'),
                   function ($message) {
                       $message->to(config('mail.from.address'));
-                      $message->subject(sprintf('[%s] 새로운 글이 등록되었습니다.', config('project.name')));
+                      $message->subject(trans('emails.articles.created'));
                   }
               );
           }

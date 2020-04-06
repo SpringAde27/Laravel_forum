@@ -153,3 +153,48 @@ if (! function_exists('taggable')) {
         return in_array(config('cache.default'), ['memcached', 'redis'], true);
     }
 }
+
+/* 언어 선택 링크가 누적되는 return 필드를 버리고
+ * 쿼리 스트링을 새로 만들기
+ */
+if (! function_exists('current_url')) {
+    /**
+     * Build current url string, without return param.
+     *
+     * @return string
+     */
+    function current_url()
+    {
+        if (! request()->has('return')) {
+            return request()->fullUrl();
+        }
+
+        return sprintf(
+            '%s?%s',
+            request()->url(),
+            http_build_query(request()->except('return'))
+        );
+    }
+}
+
+/* 열과 행을 서로 바꾸는 함수 */
+if (! function_exists('array_transpose')) {
+    /**
+     * Transpose the given array.
+     *
+     * @param array $data
+     * @return array
+     */
+    function array_transpose(array $data)
+    {
+        $res = [];
+
+        foreach ($data as $row => $columns) {
+            foreach ($columns as $row2 => $column2) {
+                $res[$row2][$row] = $column2;
+            }
+        }
+
+        return $res;
+    }
+}

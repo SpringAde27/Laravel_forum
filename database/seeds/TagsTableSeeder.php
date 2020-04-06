@@ -17,12 +17,21 @@ class TagsTableSeeder extends Seeder
 
         $tags = config('project.tags');
 
-        foreach($tags as $slug => $name) {
+        foreach(array_transpose($tags) as $slug => $names) {
             App\Tag::create([
-                'name' => $name,
+                'name' => $names['ko'],
+                'ko' => $names['ko'],
+                'en' => $names['en'],
                 'slug' => Str::slug($slug)
             ]);
         }
+
+        // foreach($tags as $slug => $name) {
+        //     App\Tag::create([
+        //         'name' => $name,
+        //         'slug' => Str::slug($slug)
+        //     ]);
+        // }
 
       /**
        * 별도의 seeder class로 추출하고 마스터시더에서 call()할 때는 

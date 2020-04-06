@@ -6,7 +6,7 @@
     @foreach ($tags as $tag)
     <li class="d-inline-block">
       <a href="{{ route('tags.articles.index', $tag->slug) }}" class="badge badge-primary">
-        {{ $tag->name }}
+        {{ $tag->{$currentLocale} }}
       </a>
     </li>
     @endforeach

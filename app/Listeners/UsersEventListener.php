@@ -51,24 +51,28 @@ class UsersEventListener
     public function onUserCreated(\App\Events\UserCreated $event)
     {
         $user = $event->user;
+        $view = 'emails.'.app()->getLocale().'.auth.confirm';
         
-        \Mail::send('emails.auth.confirm', compact('user'), 
-        function ($message) use ($user) {
-            $message->to($user->email);
-            $message->subject(sprintf('[%s] 회원가입을 확인해 주세요.', config('project.name')));
-        });
+        \Mail::send(
+            $view,
+            compact('user'), 
+            function ($message) use ($user) {
+                $message->to($user->email);
+                $message->subject(trans('emails.auth.confirm'));
+            }
+        );
     }
 
     public function onPasswordRemindCreated(\App\Events\PasswordRemindCreated $event)
     {
+        $view = 'emails.'.app()->getLocale().'.passwords.reset';
+
         \Mail::send(
-            'emails.passwords.reset',
+            $view,
             ['token' => $event->token],
             function ($message) use ($event) {
                 $message->to($event->email);
-                $message->subject(
-                    sprintf('[%s] 비밀번호를 초기화하세요.', config('project.name'))
-                );
+                $message->subject(trans('emails.passwords.reset'));
             }
         );
     }

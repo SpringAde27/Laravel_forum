@@ -27,7 +27,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // 런타임에 기본 언어를 오버라이딩
-        app()->setLocale('en');
+        // app()->setLocale('en');
+
+        if ($locale = request()->cookie('my__locale')) {
+            // 암호화된 쿠키를 복호화한 후 적용할 언어를 설정
+            app()->setLocale(\Crypt::decrypt($locale));
+        }
 
         // 카본 인스턴스의 언어를 설정
         \Carbon\Carbon::setLocale(app()->getLocale());
@@ -39,8 +44,12 @@ class AppServiceProvider extends ServiceProvider
             });
 
             $currentUser = auth()->user();
+            $currentRouteName = \Route::currentRouteName();
+            $currentLocale = app()->getLocale();
+            $currentUrl = current_url();
+            // $currentUrl = request()->fullUrl();
             
-            $view->with( compact('allTags', 'currentUser'));
+            $view->with(compact('allTags', 'currentUser', 'currentRouteName', 'currentLocale', 'currentUrl'));
         });
     }
 }

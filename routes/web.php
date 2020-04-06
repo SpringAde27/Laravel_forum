@@ -25,6 +25,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Auth::routes();
 
 
+/* 언어 선택 */
+Route::get('locale', [
+  'as' => 'locale',
+  'uses' => 'WelcomeController@locale',
+]);
+
+
 /* Article RESTful Resource Controller */
 Route::resource('articles','ArticlesController');
 
