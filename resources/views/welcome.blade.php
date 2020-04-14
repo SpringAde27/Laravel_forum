@@ -47,19 +47,30 @@
       <div class="content">        
         @include('flash::message')
 
-        <div class="title m-b-md">
-            Laravel
-        </div>
+        <h2>{{ $message }}</h2>
 
+        <div class="title m-b-md">
+          {{ $name }}
+        </div>
+        
         <div class="links">
           <a href="https://laravel.com/docs">Docs</a>
           <a href="https://laracasts.com">Laracasts</a>
-          <a href="https://laravel-news.com">News</a>
-          <a href="https://blog.laravel.com">Blog</a>
-          <a href="https://nova.laravel.com">Nova</a>
-          <a href="https://forge.laravel.com">Forge</a>
-          <a href="https://vapor.laravel.com">Vapor</a>
-          <a href="https://github.com/laravel/laravel">GitHub</a>
+          <a href="{{ route('articles.index') }}">
+            {{ trans('forum.title') }}
+          </a>
+          @if (auth()->guest())
+            <a href="{{ route('sessions.create') }}">
+              {{ trans('auth.sessions.title') }}
+            </a>
+            <a href="{{ route('users.create') }}">
+              {{ trans('auth.users.title') }}
+            </a>
+          @else
+            <a href="{{ route('sessions.destroy') }}">
+              {{ auth()->user()->name }} • {{ trans('auth.sessions.destroy') }}
+            </a>
+          @endif
         </div>
       </div>
     </div>

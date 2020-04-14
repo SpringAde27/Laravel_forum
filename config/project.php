@@ -9,6 +9,7 @@ return [
     'name' => 'My Forum',
     'url' => 'http://myforum.local:8000',
     'description' => '',
+    'api_domain' => 'http://api.myforum.local:8000',
 
     /*
     |--------------------------------------------------------------------------
